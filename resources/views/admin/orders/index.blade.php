@@ -32,7 +32,8 @@
                         <option value="">Tất cả</option>
                         <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Chờ xử lý</option>
                         <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>Đang xử lý</option>
-                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Hoàn tất</option>
+                        <option value="shipped" {{ request('status') == 'shipped' ? 'selected' : '' }}>Đã gửi</option>
+                        <option value="delivered" {{ request('status') == 'delivered' ? 'selected' : '' }}>Đã giao</option>
                         <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Đã hủy</option>
                     </select>
                 </div>
@@ -109,16 +110,19 @@
                             <td class="py-3 px-4 text-left">{{ number_format($order->total_amount, 0, ',', '.') }}₫</td>
                             <td class="py-3 px-4 text-left">
                                 <span class="px-2 py-1 rounded-full text-xs
-                                @if($order->status == 'completed') bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300
+                                @if($order->status == 'shipped') bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300
+                                @elseif($order->status == 'delivered') bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300
                                 @elseif($order->status == 'processing') bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300
                                 @elseif($order->status == 'cancelled') bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300
                                 @else bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300
                                 @endif">
                                     @switch($order->status)
-                                        @case('completed') Hoàn tất @break
+                                        @case('pending') Chờ xử lý @break
                                         @case('processing') Đang xử lý @break
+                                        @case('shipped') Đã gửi @break
+                                        @case('delivered') Đã giao @break
                                         @case('cancelled') Đã hủy @break
-                                        @default Chờ xử lý
+                                        @default {{ ucfirst($order->status) }}
                                     @endswitch
                                 </span>
                             </td>

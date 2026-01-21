@@ -222,7 +222,7 @@ class AdminProductController extends Controller
         $product->delete();
 
         return redirect()->route('admin.products.index')
-            ->with('success', 'Product deleted successfully.');
+            ->with('success', 'Xóa thành công.');
     }
 
     /**
@@ -281,7 +281,7 @@ class AdminProductController extends Controller
                         }
                     }
                     Product::whereIn('id', $productIds)->delete();
-                    $message = "{$count} product(s) deleted successfully.";
+                    $message = "{$count} sản phẩm đã được xóa thành công.";
                     break;
             }
 

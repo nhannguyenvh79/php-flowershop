@@ -26,30 +26,41 @@
                     <h2 class="text-xl font-bold text-gray-800 dark:text-white">Đơn hàng #{{ $order->id }}</h2>
                     <p class="text-gray-600 dark:text-gray-400 mt-1">Đặt vào {{ $order->created_at->format('d/m/Y, H:i') }}</p>
                 </div>
-                <div class="mt-4 md:mt-0">
+                <div class="mt-4 md:mt-0 flex items-center gap-3">
+                    <a href="{{ route('orders.print', $order->id) }}" target="_blank"
+                        class="inline-flex items-center px-4 py-2 rounded-lg bg-pink-600 hover:bg-pink-700 text-white text-sm font-medium transition-colors duration-200">
+                        <i class="fas fa-print mr-2"></i> In đơn hàng
+                    </a>
                     <div class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium
                             {{ $order->status === 'pending' ? 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200' : '' }}
                             {{ $order->status === 'processing' ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200' : '' }}
-                            {{ $order->status === 'completed' ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200' : '' }}
+                            {{ $order->status === 'shipped' ? 'bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-200' : '' }}
+                            {{ $order->status === 'delivered' ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200' : '' }}
                             {{ $order->status === 'cancelled' ? 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200' : '' }}
                         ">
                         <i class="fas
                             {{ $order->status === 'pending' ? 'fa-clock' : '' }}
                             {{ $order->status === 'processing' ? 'fa-cog fa-spin' : '' }}
-                            {{ $order->status === 'completed' ? 'fa-check-circle' : '' }}
+                            {{ $order->status === 'shipped' ? 'fa-box' : '' }}
+                            {{ $order->status === 'delivered' ? 'fa-check-circle' : '' }}
                             {{ $order->status === 'cancelled' ? 'fa-times-circle' : '' }}
                             mr-2"></i>
-                        @if($order->status === 'pending')
-                            Chờ xử lý
-                        @elseif($order->status === 'processing')
-                            Đang xử lý
-                        @elseif($order->status === 'completed')
-                            Hoàn thành
-                        @elseif($order->status === 'cancelled')
-                            Đã hủy
-                        @else
-                            {{ ucfirst($order->status) }}
-                        @endif
+                        @switch($order->status)
+                            @case('pending')
+                                Chờ xử lý
+                                @break
+                            @case('processing')
+                                Đang xử lý
+                                @break
+                            @case('shipped')
+                                Đã gửi
+                                @break
+                            @case('delivered')
+                                Đã giao
+                                @break
+                            @default
+                                Đã hủy
+                        @endswitch
                     </div>
                 </div>
             </div>
@@ -152,15 +163,20 @@
                                 <div class="relative flex items-start mb-8">
                                     <div
                                         class="flex items-center justify-center h-10 w-10 rounded-full
-                                            {{ in_array($order->status, ['processing', 'shipped', 'completed']) ? 'bg-pink-600 dark:bg-pink-700 text-white' : 'bg-gray-200 dark:bg-gray-600 text-gray-400' }}">
-                                        <i class="fas fa-cog{{ in_array($order->status, ['processing', 'shipped', 'completed']) ? ' fa-spin' : '' }}"></i>
+                                            {{ in_array($order->status, ['processing', 'shipped', 'delivered']) ? 'bg-pink-600 dark:bg-pink-700 text-white' : 'bg-gray-200 dark:bg-gray-600 text-gray-400' }}">
+                                        <i class="fas fa-cog{{ $order->status === 'processing' ? ' fa-spin' : '' }}"></i>
                                     </div>
                                     <div class="ml-4">
                                         <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Đang xử lý</h4>
-                                        @if($order->processing_at)
-                                            <p class="text-sm text-gray-600 dark:text-gray-400">{{ $order->processing_at->format('d/m/Y, H:i') }}
-                                            </p>
-                                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Đơn hàng của bạn đang được xử lý</p>
+                                        @if(in_array($order->status, ['processing', 'shipped', 'delivered']))
+                                            @if($order->processing_at)
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">{{ $order->processing_at->format('d/m/Y, H:i') }}</p>
+                                            @endif
+                                            @if(in_array($order->status, ['shipped', 'delivered']))
+                                                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Đơn hàng của bạn đã xử lý xong</p>
+                                            @else
+                                                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Đơn hàng của bạn đang được xử lý</p>
+                                            @endif
                                         @else
                                             <p class="text-sm text-gray-400 dark:text-gray-500">Chờ xử lý</p>
                                         @endif
@@ -171,13 +187,15 @@
                                 <div class="relative flex items-start mb-8">
                                     <div
                                         class="flex items-center justify-center h-10 w-10 rounded-full
-                                            {{ in_array($order->status, ['shipped', 'completed']) ? 'bg-pink-600 dark:bg-pink-700 text-white' : 'bg-gray-200 dark:bg-gray-600 text-gray-400' }}">
+                                            {{ in_array($order->status, ['shipped', 'delivered']) ? 'bg-pink-600 dark:bg-pink-700 text-white' : 'bg-gray-200 dark:bg-gray-600 text-gray-400' }}">
                                         <i class="fas fa-shipping-fast"></i>
                                     </div>
                                     <div class="ml-4">
                                         <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Đã gửi hàng</h4>
-                                        @if($order->shipped_at)
-                                            <p class="text-sm text-gray-600 dark:text-gray-400">{{ $order->shipped_at->format('d/m/Y, H:i') }}</p>
+                                        @if(in_array($order->status, ['shipped', 'delivered']))
+                                            @if($order->shipped_at)
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">{{ $order->shipped_at->format('d/m/Y, H:i') }}</p>
+                                            @endif
                                             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Đơn hàng của bạn đã được gửi đi</p>
                                             @if($order->tracking_number)
                                                 <p class="text-sm font-medium mt-1 text-gray-900 dark:text-white">Mã vận đơn: {{ $order->tracking_number }}</p>
@@ -192,13 +210,15 @@
                                 <div class="relative flex items-start">
                                     <div
                                         class="flex items-center justify-center h-10 w-10 rounded-full
-                                            {{ $order->status === 'completed' ? 'bg-pink-600 dark:bg-pink-700 text-white' : 'bg-gray-200 dark:bg-gray-600 text-gray-400' }}">
+                                            {{ $order->status === 'delivered' ? 'bg-pink-600 dark:bg-pink-700 text-white' : 'bg-gray-200 dark:bg-gray-600 text-gray-400' }}">
                                         <i class="fas fa-home"></i>
                                     </div>
                                     <div class="ml-4">
                                         <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Đã giao hàng</h4>
-                                        @if($order->completed_at)
-                                            <p class="text-sm text-gray-600 dark:text-gray-400">{{ $order->completed_at->format('d/m/Y, H:i') }}</p>
+                                        @if($order->status === 'delivered')
+                                            @if($order->delivered_at)
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">{{ $order->delivered_at->format('d/m/Y, H:i') }}</p>
+                                            @endif
                                             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Đơn hàng của bạn đã được giao thành công</p>
                                         @else
                                             <p class="text-sm text-gray-400 dark:text-gray-500">Chờ xử lý</p>
@@ -325,7 +345,7 @@
                 <i class="fas fa-arrow-left mr-2"></i> Quay lại đơn hàng của tôi
             </a>
 
-            @if($order->status !== 'cancelled' && $order->status !== 'completed')
+            @if(in_array($order->status, ['pending', 'processing']))
                 <form action="{{ route('orders.cancel', $order) }}" method="POST" class="inline-block"
                     onsubmit="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này? Hành động này không thể hoàn tác.')">
                     @csrf
@@ -337,10 +357,7 @@
                 </form>
             @endif
 
-            <a href="#" onclick="window.print()"
-                class="inline-flex items-center justify-center px-6 py-3 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-lg transition duration-300 font-medium">
-                <i class="fas fa-print mr-2"></i> In đơn hàng
-            </a>
+          
         </div>
     </div>
 @endsection

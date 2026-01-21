@@ -13,6 +13,13 @@ class Order extends Model
         'total_amount',
         'status',
         'notes',
+        'processing_at',
+        'shipped_at',
+        'delivered_at',
+        'cancelled_at',
+        'tracking_number',
+        'payment_method',
+        'payment_status',
     ];
 
     /**

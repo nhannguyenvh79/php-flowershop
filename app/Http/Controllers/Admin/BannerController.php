@@ -160,6 +160,6 @@ class BannerController extends Controller
         $banner->delete();
 
         return redirect()->route('admin.banners.index')
-            ->with('success', 'Banner deleted successfully.');
+            ->with('success', 'Xóa thành công.');
     }
 }

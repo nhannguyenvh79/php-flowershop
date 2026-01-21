@@ -65,8 +65,11 @@
                                         <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>
                                             <i class="fas fa-cog"></i> Đang xử lý
                                         </option>
-                                        <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>
-                                            <i class="fas fa-check"></i> Hoàn thành
+                                        <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>
+                                            <i class="fas fa-box"></i> Đã gửi
+                                        </option>
+                                        <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>
+                                            <i class="fas fa-check"></i> Đã giao
                                         </option>
                                         <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>
                                             <i class="fas fa-times"></i> Đã hủy
@@ -102,13 +105,38 @@
                     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                         <div class="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                             <h2 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
-                                <i class="fas fa-map-marker-alt mr-3 text-purple-500"></i>Địa Chỉ Giao Hàng
+                                <i class="fas fa-map-marker-alt mr-3 text-purple-500"></i>Địa Chỉ & Vận Chuyển
                             </h2>
                         </div>
-                        <div class="p-6">
-                            <textarea name="shipping_address" id="shipping_address" rows="4"
-                                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 transition font-mono text-sm"
-                                placeholder="Nhập địa chỉ giao hàng đầy đủ...">{{ old('shipping_address', $order->shipping_address) }}</textarea>
+                        <div class="p-6 space-y-4">
+                            <div>
+                                <label for="shipping_address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Địa chỉ giao hàng
+                                </label>
+                                <textarea name="shipping_address" id="shipping_address" rows="3"
+                                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 transition font-mono text-sm"
+                                    placeholder="Nhập địa chỉ giao hàng đầy đủ...">{{ old('shipping_address', $order->shipping_address) }}</textarea>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="tracking_number" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        <i class="fas fa-barcode mr-2 text-purple-500"></i>Mã vận đơn
+                                    </label>
+                                    <input type="text" name="tracking_number" id="tracking_number"
+                                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 transition"
+                                        placeholder="VN12345678..."
+                                        value="{{ old('tracking_number', $order->tracking_number) }}">
+                                </div>
+                                <div>
+                                    <label for="payment_method" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        <i class="fas fa-wallet mr-2 text-purple-500"></i>Phương thức thanh toán
+                                    </label>
+                                    <input type="text" name="payment_method" id="payment_method"
+                                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 transition"
+                                        placeholder="COD / Chuyển khoản..."
+                                        value="{{ old('payment_method', $order->payment_method ?? 'COD') }}">
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -223,10 +251,26 @@
                                 <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full
                                     @if($order->status == 'pending') bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300
                                     @elseif($order->status == 'processing') bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300
-                                    @elseif($order->status == 'completed') bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300
+                                    @elseif($order->status == 'shipped') bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300
+                                    @elseif($order->status == 'delivered') bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300
                                     @else bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300
                                     @endif">
-                                    {{ $order->status == 'pending' ? 'Chờ xử lý' : ($order->status == 'processing' ? 'Đang xử lý' : ($order->status == 'completed' ? 'Hoàn thành' : 'Đã hủy')) }}
+                                    @switch($order->status)
+                                        @case('pending')
+                                            Chờ xử lý
+                                            @break
+                                        @case('processing')
+                                            Đang xử lý
+                                            @break
+                                        @case('shipped')
+                                            Đã gửi
+                                            @break
+                                        @case('delivered')
+                                            Đã giao
+                                            @break
+                                        @default
+                                            Đã hủy
+                                    @endswitch
                                 </span>
                             </div>
                             <div class="flex items-center">

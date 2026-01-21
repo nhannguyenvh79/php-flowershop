@@ -16,6 +16,14 @@ return new class extends Migration {
             $table->decimal('total_amount', 10, 2);
             $table->enum('status', ['pending', 'processing', 'shipped', 'delivered', 'cancelled'])->default('pending');
             $table->text('notes')->nullable();
+            $table->timestamp('processing_at')->nullable();
+            $table->timestamp('shipped_at')->nullable();
+            $table->timestamp('delivered_at')->nullable();
+            $table->timestamp('cancelled_at')->nullable();
+            $table->string('tracking_number')->nullable();
+            $table->string('payment_method')->nullable();
+            $table->string('payment_status')->default('pending');
+            $table->text('shipping_address')->nullable();
             $table->timestamps();
         });
     }

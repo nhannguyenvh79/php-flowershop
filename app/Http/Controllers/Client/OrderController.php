@@ -76,7 +76,7 @@ class OrderController extends Controller
 
         // Only allow cancelling orders that are in pending or processing status
         if (!in_array($order->status, ['pending', 'processing'])) {
-            return redirect()->back()->with('error', 'This order cannot be cancelled.');
+            return redirect()->back()->with('error', 'Không thể hủy đơn hàng ở trạng thái này.');
         }
 
         $order->status = 'cancelled';
@@ -84,7 +84,7 @@ class OrderController extends Controller
         $order->save();
 
         // Restore product stock
-        foreach ($order->items as $item) {
+        foreach ($order->orderItems as $item) {
             if ($item->product && $item->product->manage_stock) {
                 $item->product->stock_quantity += $item->quantity;
 
@@ -96,6 +96,6 @@ class OrderController extends Controller
             }
         }
 
-        return redirect()->route('orders.show', $order)->with('success', 'Order has been cancelled.');
+        return redirect()->route('orders.show', $order)->with('success', 'Đơn hàng đã được hủy thành công.');
     }
 }

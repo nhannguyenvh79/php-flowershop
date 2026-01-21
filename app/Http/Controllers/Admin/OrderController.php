@@ -155,9 +155,11 @@ class OrderController extends Controller
 
         $validated = $request->validate([
             'customer_id' => 'required|exists:customers,id',
-            'status' => 'required|in:pending,processing,completed,cancelled',
+            'status' => 'required|in:pending,processing,shipped,delivered,cancelled',
             'payment_status' => 'required|in:pending,paid,refunded,failed',
-            'shipping_address' => 'nullable|string|max:255',
+            'payment_method' => 'nullable|string|max:100',
+            'tracking_number' => 'nullable|string|max:100',
+            'shipping_address' => 'nullable|string|max:500',
         ]);
 
         // Note: This does not handle stock changes if an order is cancelled.
@@ -191,6 +193,6 @@ class OrderController extends Controller
         $order->delete();
 
         return redirect()->route('admin.orders.index')
-            ->with('success', 'Order deleted successfully.');
+            ->with('success', 'Xóa thành công.');
     }
 }

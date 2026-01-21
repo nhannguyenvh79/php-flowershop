@@ -7,6 +7,10 @@
         <div class="mb-6 flex justify-between items-center">
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Đơn hàng #{{ $order->id }}</h1>
             <div>
+                <a href="{{ route('admin.orders.print', $order->id) }}" target="_blank"
+                    class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mr-2 dark:bg-blue-600 dark:hover:bg-blue-700">
+                    <i class="fas fa-print mr-2"></i> In đơn hàng
+                </a>
                 <a href="{{ route('admin.orders.edit', $order->id) }}"
                     class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded mr-2 dark:bg-yellow-600 dark:hover:bg-yellow-700">
                     <i class="fas fa-edit mr-2"></i> Chỉnh sửa
@@ -117,11 +121,27 @@
                             <p>
                                 <span
                                     class="px-2 py-1 rounded text-xs 
-                                        {{ $order->status == 'completed' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : '' }}
+                                        {{ $order->status == 'pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300' : '' }}
                                         {{ $order->status == 'processing' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300' : '' }}
-                                        {{ $order->status == 'cancelled' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300' : '' }}
-                                        {{ !in_array($order->status, ['completed', 'processing', 'cancelled']) ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300' : '' }}">
-                                    {{ ucfirst($order->status) }}
+                                        {{ $order->status == 'shipped' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300' : '' }}
+                                        {{ $order->status == 'delivered' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : '' }}
+                                        {{ $order->status == 'cancelled' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300' : '' }}">
+                                    @switch($order->status)
+                                        @case('pending')
+                                            Chờ xử lý
+                                            @break
+                                        @case('processing')
+                                            Đang xử lý
+                                            @break
+                                        @case('shipped')
+                                            Đã gửi
+                                            @break
+                                        @case('delivered')
+                                            Đã giao
+                                            @break
+                                        @default
+                                            Đã hủy
+                                    @endswitch
                                 </span>
                             </p>
                         </div>

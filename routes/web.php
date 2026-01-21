@@ -81,6 +81,9 @@ Route::post('/orders', [CheckoutController::class, 'store'])->name('orders.store
 
 // Order Routes (Protected by auth middleware)
 Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show')->middleware(['client.auth', 'client.only']);
+Route::get('/orders/{order}/print', function (\App\Models\Order $order) {
+    return view('client.orders.print', compact('order'));
+})->name('orders.print')->middleware(['client.auth', 'client.only']);
 Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel')->middleware(['client.auth', 'client.only']);
 
 // Account Routes (Protected by auth middleware)
@@ -198,6 +201,11 @@ Route::prefix('ad')->middleware(['auth', 'admin'])->group(function () {
         'update' => 'admin.orders.update',
         'destroy' => 'admin.orders.destroy',
     ]);
+
+    // Order Print
+    Route::get('orders/{order}/print', function (\App\Models\Order $order) {
+        return view('admin.orders.print', compact('order'));
+    })->name('admin.orders.print');
 
     // Order Items
     Route::resource('order-items', OrderItemController::class)->names([
