@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\BrandController;
@@ -105,12 +106,20 @@ Route::post('/register', [ClientAuthController::class, 'register'])->middleware(
 Route::get('/login', [ClientAuthController::class, 'loginForm'])->name('client.login')->middleware('client.only');
 Route::post('/login', [ClientAuthController::class, 'login'])->middleware('client.only');
 Route::post('/logout', [ClientAuthController::class, 'logout'])->name('client.logout');
+Route::get('/forgot-password', function () {
+    return view('client.auth.forgot-password');
+})->name('client.forgot-password')->middleware('client.only');
+Route::post('/forgot-password-submit', function (Request $request) {
+    return back()->with('status', 'Vui lòng liên hệ bộ phận hỗ trợ khách hàng để đặt lại mật khẩu.');
+})->name('client.password.email');
 
 // Admin Auth Routes  
 Route::get('/admin/login', [AuthController::class, 'loginForm'])->name('login');
 Route::post('/admin/login', [AuthController::class, 'login']);
 Route::post('/admin/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/forgot-password', [AuthController::class, 'forgotPasswordForm'])->name('password.request');
+Route::get('/admin/forgot-password', function () {
+    return view('auth.forgot-password');
+})->name('admin.forgot-password');
 Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
 Route::get('/reset-password/{token}', [AuthController::class, 'resetPasswordForm'])->name('password.reset');
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');

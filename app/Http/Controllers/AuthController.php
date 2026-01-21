@@ -65,7 +65,7 @@ class AuthController extends Controller
 
         // This would normally use Laravel's password reset functionality
         // But for simplicity, we'll just redirect with a message
-        return back()->with('status', 'Password reset link sent to your email!');
+        return back()->with('status', 'Liên kết đặt lại mật khẩu đã được gửi đến email của bạn!');
     }
 
     public function resetPasswordForm(string $token)

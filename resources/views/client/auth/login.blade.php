@@ -47,12 +47,18 @@
                 </div>
 
                 <!-- Remember Me -->
-                <div class="flex items-center mb-6">
+                <div class="flex items-center mb-4">
                     <input id="remember_me" type="checkbox" name="remember"
                         class="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-300 rounded">
                     <label for="remember_me" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
                         Ghi nhớ đăng nhập
                     </label>
+                </div>
+
+                <div class="mb-6 text-right">
+                    <a href="{{ route('client.forgot-password') }}" class="text-sm text-pink-600 dark:text-pink-400 hover:text-pink-800 dark:hover:text-pink-300">
+                        Quên mật khẩu?
+                    </a>
                 </div>
 
                 <div class="flex items-center justify-between">

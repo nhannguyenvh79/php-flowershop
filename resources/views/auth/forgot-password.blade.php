@@ -46,9 +46,20 @@
                     </button>
                 </div>
 
-                <div class="text-center">
+                <div class="text-center space-y-2">
+                    <p class="text-sm text-gray-600">
+                        <strong>Lưu ý:</strong> Tính năng đặt lại mật khẩu tự động đang được phát triển.
+                    </p>
+                    <p class="text-sm text-gray-600">
+                        Vui lòng <a href="tel:0123456789" class="text-pink-600 hover:text-pink-800 font-semibold">gọi 0123 456 789</a> 
+                        hoặc <a href="mailto:support@flowershop.com" class="text-pink-600 hover:text-pink-800 font-semibold">gửi email</a> 
+                        để được hỗ trợ.
+                    </p>
+                </div>
+
+                <div class="text-center mt-6">
                     <a href="{{ route('login') }}" class="text-sm text-pink-600 hover:text-pink-800">
-                        Quay lại trang đăng nhập
+                        ← Quay lại trang đăng nhập
                     </a>
                 </div>
             </form>

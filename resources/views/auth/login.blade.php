@@ -45,13 +45,15 @@
                     @enderror
                 </div>
 
-                <div class="flex items-center justify-between mb-6">
-                    <div class="flex items-center">
+                <div class="mb-4">
+                    <label class="flex items-center">
                         <input id="remember" type="checkbox" name="remember" class="h-4 w-4 text-pink-600">
-                        <label for="remember" class="ml-2 text-sm text-gray-600">Ghi nhớ đăng nhập</label>
-                    </div>
+                        <span class="ml-2 text-sm text-gray-600">Ghi nhớ đăng nhập</span>
+                    </label>
+                </div>
 
-                    <a href="{{ route('password.request') }}" class="text-sm text-pink-600 hover:text-pink-800">
+                <div class="mb-6 text-right">
+                    <a href="{{ route('admin.forgot-password') }}" class="text-sm text-pink-600 hover:text-pink-800">
                         Quên mật khẩu?
                     </a>
                 </div>
