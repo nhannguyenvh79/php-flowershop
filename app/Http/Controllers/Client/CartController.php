@@ -67,7 +67,7 @@ class CartController extends Controller
         $product = Product::findOrFail($productId);
 
         if ($product->stock < $quantity) {
-            return redirect()->back()->with('error', 'Not enough stock for this product.');
+            return redirect()->back()->with('error', 'Sản phẩm này không còn hàng.');
         }
 
         if (Auth::check()) {
@@ -139,7 +139,7 @@ class CartController extends Controller
             // Logged-in users: update in database
             $cartItem = Cart::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
             if ($cartItem->product->stock < $quantity) {
-                return redirect()->back()->with('error', 'Not enough stock for this product.');
+                return redirect()->back()->with('error', 'Sản phẩm này không còn hàng.');
             }
             $cartItem->update(['quantity' => $quantity]);
         } else {
@@ -150,7 +150,7 @@ class CartController extends Controller
                 return redirect()->back()->with('error', 'Product not found.');
             }
             if ($product->stock < $quantity) {
-                return redirect()->back()->with('error', 'Not enough stock for this product.');
+                return redirect()->back()->with('error', 'Sản phẩm này không còn hàng.');
             }
             if (isset($cart[$id])) {
                 $cart[$id]['quantity'] = $quantity;
