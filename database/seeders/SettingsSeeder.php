@@ -16,7 +16,7 @@ class SettingsSeeder extends Seeder
             // General settings
             [
                 'key' => 'site_name',
-                'value' => 'Cửa Hàng Hoa Tươi',
+                'value' => 'Flora Garden',
                 'group' => 'general',
                 'type' => 'text',
                 'label' => 'Tên website',
@@ -209,7 +209,8 @@ class SettingsSeeder extends Seeder
                 'group' => 'payment',
                 'type' => 'boolean',
                 'label' => 'Bật chuyển khoản ngân hàng',
-                'status' => 'enabled',
+                'status' => 'disabled',
+                'notes' => 'Tính năng đang phát triển',
             ],
             [
                 'key' => 'enable_cod',
@@ -217,7 +218,8 @@ class SettingsSeeder extends Seeder
                 'group' => 'payment',
                 'type' => 'boolean',
                 'label' => 'Bật thanh toán khi nhận hàng',
-                'status' => 'enabled',
+                'status' => 'disabled',
+                'notes' => 'Tính năng đang phát triển',
             ],
 
             // Shipping settings (Development)
@@ -236,7 +238,8 @@ class SettingsSeeder extends Seeder
                 'group' => 'shipping',
                 'type' => 'number',
                 'label' => 'Phí vận chuyển cố định (VND)',
-                'status' => 'enabled',
+                'status' => 'disabled',
+                'notes' => 'Tính năng đang phát triển',
             ],
 
             // SEO settings (Development)

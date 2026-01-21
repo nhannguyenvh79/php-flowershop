@@ -239,7 +239,9 @@ Route::prefix('ad')->middleware(['auth', 'admin'])->group(function () {
     Route::put('profile', [ProfileController::class, 'update'])->name('admin.profile.update');
 
     // Settings Routes
-    Route::get('settings', [SettingsController::class, 'index'])->name('admin.settings');
+    Route::get('settings', function () {
+        return view('admin.development');
+    })->name('admin.settings');
     Route::put('settings', [SettingsController::class, 'update'])->name('admin.settings.update');
     Route::post('settings/clear-cache', [SettingsController::class, 'clearCache'])->name('admin.settings.clear-cache');
     Route::post('settings/reset', [SettingsController::class, 'resetToDefaults'])->name('admin.settings.reset');
