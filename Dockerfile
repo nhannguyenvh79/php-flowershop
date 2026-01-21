@@ -19,8 +19,9 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Enable Apache mod_rewrite, enable default site, and set ServerName
-RUN a2enmod rewrite && \
+# Enable Apache mod_rewrite, disable conflicting MPMs, and set ServerName
+RUN a2dismod mpm_event && \
+    a2enmod mpm_prefork rewrite && \
     a2ensite 000-default && \
     echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
