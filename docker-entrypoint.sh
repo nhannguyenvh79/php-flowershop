@@ -109,5 +109,11 @@ else
     echo "📡 No PORT specified, using default port 80"
 fi
 
+# Fix MPM conflict at runtime - ensure only mpm_prefork is loaded
+echo "🔧 Fixing Apache MPM configuration..."
+rm -f /etc/apache2/mods-enabled/mpm_event.* 2>/dev/null || true
+rm -f /etc/apache2/mods-enabled/mpm_worker.* 2>/dev/null || true
+a2enmod mpm_prefork 2>/dev/null || true
+
 echo "🌐 Starting Apache..."
 exec apache2-foreground

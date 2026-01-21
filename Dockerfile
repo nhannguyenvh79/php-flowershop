@@ -19,10 +19,11 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Enable Apache mod_rewrite, disable conflicting MPMs, and set ServerName
-RUN a2dismod mpm_event && \
+# Fix Apache MPM conflict - completely remove conflicting MPM configs
+RUN rm /etc/apache2/mods-enabled/mpm_event.* 2>/dev/null || true && \
+    rm /etc/apache2/mods-enabled/mpm_worker.* 2>/dev/null || true && \
+    rm /etc/apache2/mods-enabled/mpm_async.* 2>/dev/null || true && \
     a2enmod mpm_prefork rewrite && \
-    a2ensite 000-default && \
     echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Set working directory
