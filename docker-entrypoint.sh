@@ -100,10 +100,13 @@ chmod -R 775 storage bootstrap/cache
 
 echo "🎉 Laravel ready!"
 
-# Configure Apache PORT for Railway
+# Configure Apache PORT for Railway FIRST (before starting)
 if [ ! -z "$PORT" ]; then
+    echo "📡 Configuring Apache to listen on port $PORT..."
     echo "Listen $PORT" > /etc/apache2/ports.conf
     sed -i "s/<VirtualHost \*:80>/<VirtualHost *:$PORT>/" /etc/apache2/sites-available/000-default.conf
+else
+    echo "📡 No PORT specified, using default port 80"
 fi
 
 echo "🌐 Starting Apache..."

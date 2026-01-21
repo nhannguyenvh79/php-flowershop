@@ -19,8 +19,9 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Enable Apache mod_rewrite and set ServerName
+# Enable Apache mod_rewrite, enable default site, and set ServerName
 RUN a2enmod rewrite && \
+    a2ensite 000-default && \
     echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Set working directory
@@ -72,8 +73,8 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 COPY .htaccess /var/www/html/.htaccess
 
 # Health check - use PORT variable if available
-HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
-    CMD curl -f http://localhost:${PORT:-80}/health || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=180s --retries=5 \
+    CMD curl -f http://localhost:${PORT:-80}/health 2>/dev/null || exit 1
 
 # Expose port 80 by default, Railway will override with PORT variable
 EXPOSE 80
