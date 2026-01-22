@@ -4,7 +4,7 @@
 @section('page-title', 'Quản lý Thương hiệu')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="mb-8">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
@@ -155,7 +155,7 @@
                                     </form>
                                 </div>
                             </td>
-                       6</tr>
+                        </tr>
                     @empty
                         <tr>
                             <td colspan="7" class="py-12 px-6 text-center">

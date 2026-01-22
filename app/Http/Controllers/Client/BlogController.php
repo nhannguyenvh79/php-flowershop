@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
@@ -41,6 +42,19 @@ class BlogController extends Controller
             ->take(3)
             ->get();
 
-        return view('client.blogs.show', compact('blog', 'recentBlogs'));
+        // Hoa nổi bật
+        $featuredProducts = Product::where('is_active', true)
+            ->where('is_featured', true)
+            ->orderBy('created_at', 'desc')
+            ->take(4)
+            ->get();
+
+        // Hoa mới nhất
+        $latestProducts = Product::where('is_active', true)
+            ->orderBy('created_at', 'desc')
+            ->take(4)
+            ->get();
+
+        return view('client.blogs.show', compact('blog', 'recentBlogs', 'featuredProducts', 'latestProducts'));
     }
 }

@@ -282,12 +282,6 @@
                             class="md:hidden text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded-lg p-2">
                             <i class="fas fa-bars text-xl"></i>
                         </button>
-
-                        <div class="hidden md:block ml-4">
-                            <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
-                                @yield('page-title', 'Bảng điều khiển')</h1>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Quản lý cửa hàng hoa của bạn</p>
-                        </div>
                     </div>
 
                     <div class="flex items-center space-x-4">
