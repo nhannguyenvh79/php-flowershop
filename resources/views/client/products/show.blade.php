@@ -138,7 +138,7 @@
                                 @endphp
                                 
                                 @if($inWishlist)
-                                    <form action="{{ route('wishlist.remove', \App\Models\Wishlist::where('user_id', auth()->id())->where('product_id', $product->id)->first()) }}" method="POST">
+                                    <form action="{{ route('wishlist.remove', $wishlistItemId ?? '') }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="flex items-center text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300">
@@ -154,14 +154,33 @@
                                     </form>
                                 @endif
                             @else
-                                <a href="{{ route('login') }}" class="flex items-center text-gray-600 dark:text-gray-400 hover:text-pink-600 dark:hover:text-pink-400">
+                                <a href="{{ route('client.login') }}" class="flex items-center text-gray-600 dark:text-gray-400 hover:text-pink-600 dark:hover:text-pink-400">
                                     <i class="far fa-heart mr-1"></i> Thêm vào danh sách yêu thích
                                 </a>
                             @endauth
                             <span class="text-gray-300 dark:text-gray-600 mx-2">|</span>
-                            <a href="#" class="flex items-center text-gray-600 dark:text-gray-400 hover:text-pink-600 dark:hover:text-pink-400">
+                            <a href="{{ url()->current() }}" id="copy-share-link" class="flex items-center text-gray-600 dark:text-gray-400 hover:text-pink-600 dark:hover:text-pink-400">
                                 <i class="fas fa-share-alt mr-1"></i> Chia sẻ
                             </a>
+                            <span id="copy-success-msg" class="ml-2 text-green-600 dark:text-green-400 text-sm hidden">Đã copy link!</span>
+
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    var copyBtn = document.getElementById('copy-share-link');
+                                    var msg = document.getElementById('copy-success-msg');
+                                    if (copyBtn && msg) {
+                                        copyBtn.addEventListener('click', function(e) {
+                                            e.preventDefault();
+                                            navigator.clipboard.writeText(window.location.href).then(function() {
+                                                msg.classList.remove('hidden');
+                                                setTimeout(function() {
+                                                    msg.classList.add('hidden');
+                                                }, 1500);
+                                            });
+                                        });
+                                    }
+                                });
+                            </script>
                         </div>
                     </div>
                 </div>
