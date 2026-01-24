@@ -171,11 +171,11 @@
                             @foreach($featuredProducts as $product)
                                 <div class="bg-white dark:bg-gray-700 rounded-lg overflow-hidden shadow hover:shadow-lg transition duration-300">
                                     <a href="{{ route('products.show', $product) }}">
-                                        <div class="h-40 overflow-hidden">
+                                        <div class="w-full h-48 overflow-hidden bg-gray-100 dark:bg-gray-600 rounded-t-lg">
                                             @if($product->image)
-                                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover hover:scale-110 transition duration-300">
+                                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover object-center">
                                             @else
-                                                <div class="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-600">
+                                                <div class="w-full h-full flex items-center justify-center">
                                                     <i class="fas fa-image text-3xl text-gray-400"></i>
                                                 </div>
                                             @endif
@@ -218,11 +218,11 @@
                             @foreach($latestProducts as $product)
                                 <div class="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden shadow hover:shadow-lg transition duration-300 border border-gray-200 dark:border-gray-600">
                                     <a href="{{ route('products.show', $product) }}">
-                                        <div class="h-40 overflow-hidden relative">
+                                        <div class="w-full h-48 overflow-hidden relative bg-gray-100 dark:bg-gray-600 rounded-t-lg">
                                             @if($product->image)
-                                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover hover:scale-110 transition duration-300">
+                                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover object-center">
                                             @else
-                                                <div class="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-600">
+                                                <div class="w-full h-full flex items-center justify-center">
                                                     <i class="fas fa-image text-3xl text-gray-400"></i>
                                                 </div>
                                             @endif

@@ -10,10 +10,9 @@
 
 ## Các bước cài đặt
 
-### 1. Clone Repository
+### 1. Trỏ vào thư mục php-flowershop
 
 ```bash
-git clone https://github.com/nhandev04/php-flowershop.git
 cd php-flowershop
 ```
 
