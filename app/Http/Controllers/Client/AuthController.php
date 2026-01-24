@@ -33,7 +33,9 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        if (auth()->attempt($credentials)) {
+        $remember = $request->has('remember');
+
+        if (auth()->attempt($credentials, $remember)) {
             $request->session()->regenerate();
 
             // Kiểm tra nếu user là admin, redirect về admin dashboard
