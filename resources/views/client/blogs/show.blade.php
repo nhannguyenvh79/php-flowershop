@@ -37,7 +37,7 @@
     <div class="container mx-auto px-4 py-8">
         <div class="flex gap-6">
             <!-- Left Advertisement - Hidden on mobile/tablet -->
-            <div class="hidden xl:block w-40 flex-shrink-0">
+            <div class="hidden md:block w-40 flex-shrink-0">
                 <div class="sticky top-24 space-y-4">
                     <div class="bg-gradient-to-b from-pink-100 to-pink-50 dark:from-pink-900/30 dark:to-pink-800/20 rounded-lg p-4 border border-pink-200 dark:border-pink-800 shadow-sm">
                         <div class="text-center">
@@ -262,7 +262,7 @@
             </div>
 
             <!-- Right Advertisement - Hidden on mobile/tablet -->
-            <div class="hidden xl:block w-40 flex-shrink-0">
+            <div class="hidden md:block w-40 flex-shrink-0">
                 <div class="sticky top-24 space-y-4">
                     <div class="bg-gradient-to-b from-orange-100 to-orange-50 dark:from-orange-900/30 dark:to-orange-800/20 rounded-lg p-4 border border-orange-200 dark:border-orange-800 shadow-sm">
                         <div class="text-center">
