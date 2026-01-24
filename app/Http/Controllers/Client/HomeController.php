@@ -17,6 +17,7 @@ class HomeController extends Controller
         $latestProducts = Product::where('is_active', true)->latest()->take(20)->get();
         $featuredProducts = Product::where('is_active', true)
             ->where('is_featured', true)
+            ->orderBy('updated_at', 'desc')
             ->take(8)
             ->get();
 

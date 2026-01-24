@@ -20,6 +20,7 @@
         </a>
     </div>
 
+
     <!-- Search and Filter -->
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
         <div class="bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-teal-900/30 dark:to-cyan-900/30 px-6 py-4">
@@ -250,5 +251,10 @@
             </div>
         @endif
     </div>
+        @if(isset($products) && $products->hasPages())
+        <div class="mt-6 flex justify-center">
+            {{ $products->links('pagination::tailwind') }}
+        </div>
+    @endif
 </div>
 @endsection
