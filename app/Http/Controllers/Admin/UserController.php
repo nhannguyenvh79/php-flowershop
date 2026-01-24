@@ -6,50 +6,50 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
-    {
-        $query = User::query();
+public function index(Request $request)
+{
+    $query = User::query();
 
-        // Search functionality
-        if ($request->has('search') && $request->input('search')) {
-            $search = $request->input('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('username', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
-            });
-        }
-
-        // Filter by role
-        if ($request->has('role') && $request->input('role') !== '') {
-            $query->where('role', $request->input('role'));
-        }
-
-        // Sorting
-        $sortBy = $request->get('sort', 'name');
-        $sortDirection = $request->get('direction', 'asc');
-
-        // Validate sort fields
-        $allowedSorts = ['id', 'name', 'username', 'email', 'role', 'created_at'];
-        if (!in_array($sortBy, $allowedSorts)) {
-            $sortBy = 'name';
-        }
-
-        // Validate sort direction
-        if (!in_array($sortDirection, ['asc', 'desc'])) {
-            $sortDirection = 'asc';
-        }
-
-        $users = $query->orderBy($sortBy, $sortDirection)->paginate(10);
-        return view('admin.users.index', compact('users'));
+    if ($request->filled('search')) {
+        $search = $request->input('search');
+        $query->where(function ($q) use ($search) {
+            $q->where('name', 'LIKE', "%{$search}%")
+              ->orWhere('username', 'LIKE', "%{$search}%")
+              ->orWhere('email', 'LIKE', "%{$search}%");
+        });
     }
+
+    if ($request->filled('role')) {
+        $query->where('role', $request->input('role'));
+    }
+
+    $sortBy = $request->get('sort', 'id'); 
+    $sortDirection = $request->get('direction', 'desc'); 
+
+    $allowedSorts = ['id', 'name', 'username', 'email', 'role', 'created_at'];
+    if (!in_array($sortBy, $allowedSorts)) {
+        $sortBy = 'id';
+    }
+
+    if (!in_array($sortDirection, ['asc', 'desc'])) {
+        $sortDirection = 'desc';
+    }
+
+    $users = $query->orderBy($sortBy, $sortDirection)
+                   ->paginate(10)
+                   ->withQueryString();
+
+    return view('admin.users.index', compact('users'));
+}
 
     /**
      * Show the form for creating a new resource.
@@ -148,7 +148,7 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         // Prevent deleting own account
-        if (auth()->id() == $id) {
+    if (Auth::id() == $id) {
             return redirect()->route('admin.users.index')
                 ->with('error', 'You cannot delete your own account.');
         }

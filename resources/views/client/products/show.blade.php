@@ -132,13 +132,12 @@
                         <div class="mt-4 flex flex-wrap gap-2 text-sm">
                             @auth
                                 @php
-                                    $inWishlist = \App\Models\Wishlist::where('user_id', auth()->id())
+                                    $wishlistItem = \App\Models\Wishlist::where('user_id', auth()->id())
                                         ->where('product_id', $product->id)
-                                        ->exists();
+                                        ->first();
                                 @endphp
-                                
-                                @if($inWishlist)
-                                    <form action="{{ route('wishlist.remove', $wishlistItemId ?? '') }}" method="POST">
+                                @if($wishlistItem)
+                                    <form action="{{ route('wishlist.remove', $wishlistItem->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="flex items-center text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300">
